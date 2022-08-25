@@ -6,7 +6,7 @@ pre-build:
 build: pre-build
 	python3.10 build.py $(SOURCE)
 
-preview:
+preview: build
 	python3.10 preview.py $(SOURCE)
 
 
