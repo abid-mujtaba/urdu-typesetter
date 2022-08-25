@@ -1,0 +1,26 @@
+@font-face {
+    font-family: "Jameel Noori Nastaleeq";
+    src: url("../fonts/jameel-noori-nastaleeq.ttf") format("truetype");
+}
+
+body {
+   direction: rtl;
+   font-family: "Jameel Noori Nastaleeq";
+   font-size: 1em;
+   word-spacing: 0.25rem;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 2em;
+}

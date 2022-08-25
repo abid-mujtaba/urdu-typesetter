@@ -1,0 +1,5 @@
+-rrequirements.txt
+black
+isort
+mypy
+pylint
