@@ -1,0 +1,44 @@
+% The first command declare this document to be of type 'article', the most common type in LaTeX.
+\documentclass{article}
+
+% The geometry package, if used, must be the first package. We specify the four margins of the documents since the default values are too wide.
+\usepackage[top=1.25in,bottom=1.25in,left=1.00in,right=1.00in]{geometry}
+
+% The fontspec package allows us to change the main font to Nafees Nastaleeq for Urdu type-setting.
+\usepackage{fontspec}
+
+% bidi stands for bi-directional and gives access to the \setRTL command which allows us to specify that the text will flow from Left to Right
+\usepackage{bidi}
+
+% Customize line spacing
+\usepackage{setspace}
+
+\pagestyle{empty}           % Specifies the use of a no-frills page style
+\setmainfont[Script=Arabic,Scale=2,WordSpace=72,Extension=.ttf,UprightFont=*]{jameel-noori-nastaleeq}         % Specify the main font. This must be installed in your system. Change the scale value to increase the default font size. Change the WordSpace value to increase the limit on inter-word spacing. This helps remove overfull warnings and the text exceeding the margin
+
+\setlength{\parindent}{0mm}          % Declare that every paragraph will NOT start indented
+\setlength{\hangindent}{0mm}         % Declare that every line after the first one will NOT be indented either
+
+\setlength{\parskip}{1cm plus4mm minus3mm}          % Increase space between successive paragraphs
+
+\setstretch{3}          % Increase line-spacing
+%\overfullrule{1mm}      % Used for debugging. Places a vertical line along-side every overfull line
+\setRTL                 % The text will flow from Right to Left
+
+
+\begin{document}        % The actual content of the document is about to start
+
+   \begin{center} \Huge          % The text in the 'center' block will appear horizontally centered and will be larger in size
+        {{title}}
+   \end{center}
+   \vspace{-1\baselineskip}
+   \begin{center}
+        {{author}}
+   \end{center}
+   \vspace{\baselineskip}    % Adds two empty lines worth of vertical space to separate the heading from the rest of the text
+
+    {% for line in story %}
+        {{line}}
+    {% endfor %}
+
+\end{document}
