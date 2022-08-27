@@ -26,4 +26,7 @@ RUN apt-get update \
 COPY --from=py-builder /work/dist/*.whl /wheel/
 RUN pip install /wheel/*.whl
 
+COPY entrypoint /
+ENTRYPOINT [ "/entrypoint" ]
+
 WORKDIR /src

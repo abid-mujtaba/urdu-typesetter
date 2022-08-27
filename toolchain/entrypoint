@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+# TODO: If the first arg is 'bash' just exec to a shell (bypass)
+
+# No args means the current folder is considered the source of data (yaml files)
+
+if [[ $# -ge 1 ]] && [[ "$1" = "bash" ]];
+then
+    shift 1
+    exec bash "$@"
+fi

@@ -19,5 +19,6 @@ classifiers = [
 exclude = [
     "dist/",
     "Dockerfile",
+    "entrypoint",
     "urdu-builder",
 ]
