@@ -1,11 +1,79 @@
 #! /usr/bin/env bash
 
-# TODO: If the first arg is 'bash' just exec to a shell (bypass)
+print_usage() {
+    echo "$0 builds/previews Urdu literature artifacts from yaml source"
+    echo
+    echo "Usage:"
+    echo "  $0 [--format (all|epub|pdf|html)] --build [source-folder]"
+    echo "  $0 --preview [source-folder]"
+    echo
+    echo "    <source-folder> defaults to the current folder"
+}
 
-# No args means the current folder is considered the source of data (yaml files)
 
+build_pdf() {
+    local -r src="$1"
+
+    echo "Building pdf for source: ${src}"
+}
+
+
+# Start execution
+# If the first arg is 'bash' just exec to a shell (bypass)
 if [[ $# -ge 1 ]] && [[ "$1" = "bash" ]];
 then
     shift 1
     exec bash "$@"
 fi
+
+while [ $# -gt 0 ];
+do
+    case "$1" in
+        --format|-f)
+            format="$2"
+            shift 2
+            ;;
+
+        --build|-b)
+            command="$2"
+            shift 2
+            ;;
+
+        --preview|-p)
+            command="preview"
+            shift 2
+            ;;
+
+        *)
+            source="$1"
+            shift
+
+            [[ $# -gt 0 ]] && print_usage && exit 1
+    esac
+done
+
+# A --format cannot be specified when previewing (which is only for html)
+[[ "$command" = "preview" ]] && [[ -n "$format" ]] && print_usage && exit 1
+
+# Set default values for unspecified arguments
+[[ -z "$format" ]] && format="all"
+[[ -z "$command" ]] && command="build"
+[[ -z "$source" ]] && source="."
+
+readonly command format source
+
+case "$command" in
+    "build")
+        case "$format" in
+            "epub") ;;
+            "html") ;;
+            "pdf") build_pdf "$source" ;;
+            "all") ;;
+        esac
+        ;;
+
+    "preview")
+        build_html "$source"
+        preview_html "$source"
+        ;;
+esac
