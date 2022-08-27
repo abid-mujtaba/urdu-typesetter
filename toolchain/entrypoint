@@ -11,13 +11,6 @@ print_usage() {
 }
 
 
-build_pdf() {
-    local -r src="$1"
-
-    echo "Building pdf for source: ${src}"
-}
-
-
 # Start execution
 # If the first arg is 'bash' just exec to a shell (bypass)
 if [[ $# -ge 1 ]] && [[ "$1" = "bash" ]];
@@ -67,7 +60,7 @@ case "$command" in
         case "$format" in
             "epub") ;;
             "html") ;;
-            "pdf") build_pdf "$source" ;;
+            "pdf") python3.10 -m urdu_builder --format pdf "$source" ;;
             "all") ;;
         esac
         ;;
