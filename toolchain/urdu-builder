@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+#
+# Entrypoint for urdu building toolchain which correctly invokes the underlying tools
+
+docker run --rm -v "$(pwd -P)":/src --entrypoint=xelatex xelatex-urdu "$@"
