@@ -29,4 +29,8 @@ RUN pip install /wheel/*.whl
 
 ENTRYPOINT [ "python3.10", "-m", "urdu_builder" ]
 
+COPY assets /assets
+COPY templates /templates
+RUN mkdir /build
+
 WORKDIR /src
