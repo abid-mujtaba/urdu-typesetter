@@ -1,10 +1,11 @@
 FROM python:3.10-slim as py-builder
 
+RUN pip install --upgrade pip
+RUN pip install --upgrade build
+
 WORKDIR /work
 COPY pyproject.toml src/ /work/
 
-RUN pip install --upgrade pip
-RUN pip install --upgrade build
 RUN python -m build
 
 
@@ -26,7 +27,6 @@ RUN apt-get update \
 COPY --from=py-builder /work/dist/*.whl /wheel/
 RUN pip install /wheel/*.whl
 
-COPY entrypoint /
-ENTRYPOINT [ "/entrypoint" ]
+ENTRYPOINT [ "python3.10", "-m", "urdu_builder" ]
 
 WORKDIR /src
