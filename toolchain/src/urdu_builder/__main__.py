@@ -3,6 +3,8 @@
 
 from argparse import ArgumentParser
 
+from . import build
+
 
 def parse_args():
     """Parse CLI args."""
@@ -12,9 +14,9 @@ def parse_args():
 
     subparsers = parser.add_subparsers()
 
-    preview = subparsers.add_parser("preview")
-    preview.set_defaults(func=preview_func)
-    preview.add_argument(
+    sp_preview = subparsers.add_parser("preview")
+    sp_preview.set_defaults(func=None)
+    sp_preview.add_argument(
         "source_dir",
         nargs="?",
         default=".",
@@ -22,16 +24,16 @@ def parse_args():
         help="Folder containing the yaml source files",
     )
 
-    build = subparsers.add_parser("build")
-    build.set_defaults(func=build_func)
-    build.add_argument(
+    sp_build = subparsers.add_parser("build")
+    sp_build.set_defaults(func=build.build)
+    sp_build.add_argument(
         "--format",
         type=str,
         choices=("all", "epub", "html", "pdf"),
         default="all",
         help="Type of artifact to generate",
     )
-    build.add_argument(
+    sp_build.add_argument(
         "source_dir",
         nargs="?",
         default=".",
@@ -43,14 +45,6 @@ def parse_args():
 
     func = kwargs.pop("func")
     func(**kwargs)
-
-
-def build_func(format: str, source_dir: str):
-    print(f"build {format} {source_dir}")
-
-
-def preview_func(source_dir: str):
-    print(f"preview {source_dir}")
 
 
 def main():
