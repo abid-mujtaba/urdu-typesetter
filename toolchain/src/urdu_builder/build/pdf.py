@@ -1,5 +1,6 @@
 """Build the pdf artifact."""
 
+import os
 from pathlib import Path
 from shutil import copy
 import subprocess
@@ -49,3 +50,4 @@ def _create_pdf(build_dir: Path) -> None:
 def _copy_artifact(build_dir: Path) -> None:
     """Copy generated artifact to the current folder."""
     copy(build_dir / "story.pdf", Path.cwd())
+    os.chown(Path.cwd() / "story.pdf", 1000, 1000)  # chown artifact to avoid root-owned
