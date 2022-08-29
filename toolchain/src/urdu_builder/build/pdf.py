@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from shutil import copy
+from shutil import copy, rmtree
 import subprocess
 
 from .inject import inject
@@ -27,7 +27,7 @@ def build(source: str) -> None:
 def _pre_populate_build(build_dir: Path):
     """Create a build folder and copy over assets."""
     if build_dir.exists():  # Clean up if present
-        build_dir.rmdir()
+        rmtree(build_dir)
 
     build_dir.mkdir()
     assets = Path("/") / "assets"

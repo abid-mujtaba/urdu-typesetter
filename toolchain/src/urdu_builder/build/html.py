@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from shutil import copy, copytree
+from shutil import copy, copytree, rmtree
 
 from .inject import inject
 from .source import read
@@ -26,7 +26,7 @@ def build(source: str, create_artifact: bool = True) -> None:
 def _pre_populate_build(build_dir: Path):
     """Create a build folder and copy over assets."""
     if build_dir.exists():  # Clean up if present
-        build_dir.rmdir()
+        rmtree(build_dir)
 
     build_dir.mkdir()
     assets = Path("/") / "assets"
@@ -49,7 +49,7 @@ def _copy_artifact(build_dir: Path) -> None:
 
     assets = Path.cwd() / "assets"
     if assets.exists():
-        assets.rmdir()
+        rmtree(assets)
 
     copytree(Path("/") / "assets", assets)
     os.system("chown -R 1000:1000 ./assets")

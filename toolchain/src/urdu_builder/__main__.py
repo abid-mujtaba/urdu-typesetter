@@ -4,6 +4,7 @@
 from argparse import ArgumentParser
 
 from . import build
+from . import preview
 
 
 def parse_args():
@@ -15,7 +16,7 @@ def parse_args():
     subparsers = parser.add_subparsers()
 
     sp_preview = subparsers.add_parser("preview")
-    sp_preview.set_defaults(func=None)
+    sp_preview.set_defaults(func=preview.preview)
     sp_preview.add_argument(
         "source_dir",
         nargs="?",

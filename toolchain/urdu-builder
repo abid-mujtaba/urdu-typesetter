@@ -2,4 +2,4 @@
 #
 # Entrypoint for urdu building toolchain which correctly invokes the underlying tools
 
-docker run --rm -v "$(pwd -P)":/src --entrypoint=xelatex xelatex-urdu "$@"
+docker run --rm -v "$(pwd -P)":/src -p 8000:8000 xelatex-urdu "$@"
