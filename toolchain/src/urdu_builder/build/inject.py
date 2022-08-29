@@ -21,6 +21,6 @@ def _jinja2_env(searchpath: str) -> Environment:
 
 def _get_template(template_file: Path) -> Template:
     """Read template from html template file."""
-    env = _jinja2_env(template_file.parent)
+    env = _jinja2_env(str(template_file.parent))
 
     return env.get_template(template_file.name)

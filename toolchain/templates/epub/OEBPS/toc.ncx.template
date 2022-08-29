@@ -1,0 +1,24 @@
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en" dir="rtl">
+    <head>
+        <meta name="dtb:depth" content="1" />
+        <meta name="dtb:totalPageCount" content="1" />
+        <meta name="dtb:maxPageNumber" content="0" />
+    </head>
+
+    <docTitle>
+        <text>{{title}}</text>
+    </docTitle>
+
+    <docAuthor>
+        <text>{{author}}</text>
+    </docAuthor>
+
+    <navMap>
+        <navPoint id="chapter1" playOrder="1">
+            <navLabel>
+                    <text>{{title}}</text>
+            </navLabel>
+            <content src="story.html" />
+        </navPoint>
+    </navMap>
+</ncx>

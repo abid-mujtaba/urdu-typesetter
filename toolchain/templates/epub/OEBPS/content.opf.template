@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId" version="3.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idp.org/2007/opf" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+        <dc:title>{{title}}</dc:title>
+        <dc:language>en</dc:language>
+        <dc:creator id="creator">{{author}}</dc:creator>
+        <dc:description>{{description}}</dc:description>
+        <dc:date>{{date}}</dc:date>
+
+        <dc:identifier id="BookId">{{title}}</dc:identifier>
+        <meta property="dcterms:modified">{{date_modified}}</meta>
+        <meta name="primary-writing-mode" content="horizontal-rl" />
+    </metadata>
+
+    <manifest>
+        <item id="story" href="story.html" media-type="application/xhtml+xml" />
+        {% if cover %}
+        <item id="cover" properties="cover-image" href="assets/imgs/cover.tiff" media-type="image/tiff" />
+        {% endif %}
+        <item id="urdu-css" href="assets/css/urdu.css" media-type="text/css" />
+        <item id="jameel-noori-nastaleeq" href="assets/fonts/jameel-noori-nastaleeq.ttf" media-type="application/x-font-truetype" />
+        <item id="toc" properties="nav" href="toc.html" media-type="application/xhtml+xml" />
+        <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    </manifest>
+
+    <spine toc="ncx">
+        <itemref idref="story" />
+    </spine>
+</package>
