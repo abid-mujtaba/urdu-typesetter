@@ -11,7 +11,12 @@ Data = Dict[str, Any]
 
 def read(source_dir: Path) -> Data:
     """Read yaml data from source."""
-    return _read(source_dir / "story.yaml")
+    return _read(source_dir / "source.yaml")
+
+
+def artifact_name(source: Path) -> str:
+    """Read the name of the folder containing source.yaml; this is the artifact name."""
+    return str(source.relative_to(source.parent))
 
 
 def _read(source_file: Path) -> Data:
@@ -21,22 +26,22 @@ def _read(source_file: Path) -> Data:
     with source_file.open(encoding="UTF-8") as fin:
         data = yaml.load(fin)
 
-    _validate_story(data)
+    _validate_source(data)
     return data
 
 
-def _validate_story(data: Data) -> None:
-    """Validate story data."""
-    # Validate data
+def _validate_source(data: Data) -> None:
+    """Validate source data."""
+    assert "category" in data
+    assert data["category"] in ("prose", "poetry")
+
     assert "title" in data
     assert "author" in data
     assert "date" in data
     assert "description" in data
-    assert "story" in data
+    assert "text" in data
 
-    assert isinstance(data["story"], list)
+    assert isinstance(data["text"], list)
 
-    for line in data["story"]:
+    for line in data["text"]:
         assert isinstance(line, str)
-
-    return data

@@ -6,22 +6,25 @@ from shutil import copy, rmtree
 import subprocess
 
 from .inject import inject
-from .source import read
+from .source import artifact_name, read
 
 
-def build(source: str) -> None:
+def build(source_dir: str) -> None:
     """Build the pdf artifact."""
     build_dir = Path("/") / "build" / "pdf"
-    template_file = Path("/") / "templates" / "pdf" / "story.tex.template"
+    template_file = Path("/") / "templates" / "pdf" / "source.tex.template"
+
+    source = Path(source_dir)
+    filename = f"{artifact_name(source)}.pdf"
 
     _pre_populate_build(build_dir)
 
-    data = read(Path(source))
+    data = read(source)
     text = inject(template_file, data)
     _create_tex(build_dir, text)
 
     _create_pdf(build_dir)
-    _copy_artifact(build_dir)
+    _copy_artifact(build_dir, filename)
 
 
 def _pre_populate_build(build_dir: Path):
@@ -37,17 +40,17 @@ def _pre_populate_build(build_dir: Path):
 
 def _create_tex(build_dir: Path, text: str) -> None:
     """Create tex file from injected template text."""
-    tex_file = build_dir / "story.tex"
+    tex_file = build_dir / "source.tex"
     tex_file.write_text(text)
 
 
 def _create_pdf(build_dir: Path) -> None:
     """Create pdf file from tex file using xelatex."""
-    cmd = ["xelatex", "story.tex"]
+    cmd = ["xelatex", "source.tex"]
     subprocess.run(cmd, cwd=build_dir, check=True)
 
 
-def _copy_artifact(build_dir: Path) -> None:
+def _copy_artifact(build_dir: Path, filename: str) -> None:
     """Copy generated artifact to the current folder."""
-    copy(build_dir / "story.pdf", Path.cwd())
-    os.chown(Path.cwd() / "story.pdf", 1000, 1000)  # chown artifact to avoid root-owned
+    copy(build_dir / "source.pdf", Path.cwd() / filename)
+    os.chown(Path.cwd() / filename, 1000, 1000)  # chown artifact to avoid root-owned

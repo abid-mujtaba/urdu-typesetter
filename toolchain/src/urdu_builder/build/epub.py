@@ -6,29 +6,30 @@ from shutil import copy, copytree, rmtree
 from zipfile import ZipFile
 
 from .inject import inject
-from .source import Data, read
+from .source import Data, artifact_name, read
 
 
-def build(source: str) -> None:
+def build(source_dir: str) -> None:
     """Build epub artifact from yaml in source_dir."""
     build_dir = Path("/") / "build" / "epub"
-    source_path = Path(source)
+    source = Path(source_dir)
+    filename = f"{artifact_name(source)}.epub"
 
     _pre_populate_build(build_dir)
-    data = read(source_path)
+    data = read(source)
 
-    if (source_path / "cover.tiff").exists():
-        _copy_cover(source_path, build_dir)
+    if (source / "cover.tiff").exists():
+        _copy_cover(source, build_dir)
         data["cover"] = True  # Used in template to include tag for cover in content.opf
     else:
         data["cover"] = False
 
     _create_oebps_file(data, "content.opf", build_dir)
-    _create_oebps_file(data, "story.html", build_dir)
+    _create_oebps_file(data, "source.html", build_dir)
     _create_oebps_file(data, "toc.html", build_dir)
     _create_oebps_file(data, "toc.ncx", build_dir)
 
-    _create_epub(build_dir)
+    _create_epub(build_dir, filename)
 
 
 def _pre_populate_build(build_dir: Path) -> None:
@@ -66,14 +67,14 @@ def _copy_cover(source: Path, build_dir: Path) -> None:
     copy(source / "cover.tiff", build_dir / "OEBPS" / "assets" / "imgs")
 
 
-def _create_epub(build_dir: Path):
+def _create_epub(build_dir: Path, filename: str):
     """Create epub file by zipping up the contents of the build folder."""
     original = Path.cwd()
 
     try:
         os.chdir(build_dir)
 
-        with ZipFile(original / "story.epub", "w") as zip:
+        with ZipFile(original / filename, "w") as zip:
             for path in build_dir.glob("**/*"):
                 if path.is_file():
                     zip.write(path.relative_to(build_dir))
@@ -81,4 +82,4 @@ def _create_epub(build_dir: Path):
     finally:
         os.chdir(original)
 
-    os.chown(Path.cwd() / "story.epub", 1000, 1000)
+    os.chown(Path.cwd() / filename, 1000, 1000)

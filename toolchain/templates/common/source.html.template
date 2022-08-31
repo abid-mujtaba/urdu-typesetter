@@ -3,15 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idfp.org/2007/ops">
     <head>
         <title>{{title}}</title>
-        <link rel="stylesheet" type="text/css" href="assets/css/urdu.css"/>
+        <link rel="stylesheet" type="text/css" href="assets/css/urdu.css" />
     </head>
     <body>
         <h1>{{title}}</h1>
         <h2>{{author}}</h2>
-
-        {% for line in story %}
-            <p>{{line}}</p>
+        {% for line in text %}
+        <p>{{line}}</p>
         {% endfor %}
-
     </body>
 </html>

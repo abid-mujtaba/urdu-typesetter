@@ -14,7 +14,7 @@
     </metadata>
 
     <manifest>
-        <item id="story" href="story.html" media-type="application/xhtml+xml" />
+        <item id="source" href="source.html" media-type="application/xhtml+xml" />
         {% if cover %}
         <item id="cover" properties="cover-image" href="assets/imgs/cover.tiff" media-type="image/tiff" />
         {% endif %}
@@ -25,6 +25,6 @@
     </manifest>
 
     <spine toc="ncx">
-        <itemref idref="story" />
+        <itemref idref="source" />
     </spine>
 </package>

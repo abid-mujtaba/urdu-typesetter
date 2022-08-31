@@ -8,7 +8,9 @@
     <nav epub:type="toc" id="toc">
       <h1>Table of Contents</h1>
       <ol>
-        <li><a href="story.html">{{title}}</a></li>
+        <li>
+          <a href="source.html">{{title}}</a>
+        </li>
       </ol>
     </nav>
   </body>

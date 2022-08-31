@@ -37,7 +37,7 @@
    \end{center}
    \vspace{\baselineskip}    % Adds two empty lines worth of vertical space to separate the heading from the rest of the text
 
-    {% for line in story %}
+    {% for line in text %}
         {{line}}
     {% endfor %}
 

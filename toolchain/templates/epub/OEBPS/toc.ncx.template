@@ -18,7 +18,7 @@
             <navLabel>
                     <text>{{title}}</text>
             </navLabel>
-            <content src="story.html" />
+            <content src="source.html" />
         </navPoint>
     </navMap>
 </ncx>

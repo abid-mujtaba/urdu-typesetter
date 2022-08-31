@@ -5,22 +5,27 @@ from pathlib import Path
 from shutil import copy, copytree, rmtree
 
 from .inject import inject
-from .source import read
+from .source import artifact_name, read
 
 
-def build(source: str, create_artifact: bool = True) -> None:
-    """Build the html artifact."""
+def build(source_dir: str, create_artifact: bool = True) -> str:
+    """Build the html artifact and return name of html file."""
     build_dir = Path("/") / "build" / "html"
-    template_file = Path("/") / "templates" / "common" / "story.html.template"
+    template_file = Path("/") / "templates" / "common" / "source.html.template"
+
+    source = Path(source_dir)
+    filename = f"{artifact_name(source)}.html"
 
     _pre_populate_build(build_dir)
 
-    data = read(Path(source))
+    data = read(source)
     text = inject(template_file, data)
-    _create_html(build_dir, text)
+    _create_html(build_dir, filename, text)
 
     if create_artifact:
-        _copy_artifact(build_dir)
+        _copy_artifact(build_dir, filename)
+
+    return filename
 
 
 def _pre_populate_build(build_dir: Path):
@@ -34,18 +39,16 @@ def _pre_populate_build(build_dir: Path):
     copytree(assets, build_dir / "assets")
 
 
-def _create_html(build_dir: Path, text: str) -> None:
+def _create_html(build_dir: Path, filename: str, text: str) -> None:
     """Create html file from injected template text."""
-    tex_file = build_dir / "story.html"
+    tex_file = build_dir / filename
     tex_file.write_text(text)
 
 
-def _copy_artifact(build_dir: Path) -> None:
+def _copy_artifact(build_dir: Path, filename: str) -> None:
     """Copy generated artifact to the current folder."""
-    copy(build_dir / "story.html", Path.cwd())
-    os.chown(
-        Path.cwd() / "story.html", 1000, 1000
-    )  # chown artifact to avoid root-owned
+    copy(build_dir / filename, Path.cwd())
+    os.chown(Path.cwd() / filename, 1000, 1000)  # chown artifact to avoid root-owned
 
     assets = Path.cwd() / "assets"
     if assets.exists():
