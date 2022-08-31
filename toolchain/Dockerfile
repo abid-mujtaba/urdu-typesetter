@@ -9,7 +9,7 @@ COPY pyproject.toml src/ /work/
 RUN python -m build
 
 
-FROM ubuntu:kinetic
+FROM texlive/texlive:latest-minimal
 
 LABEL Maintainer Abid H. Mujtaba <abid.naqvi83@gmail.com>
 
