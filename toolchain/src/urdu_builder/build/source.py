@@ -33,7 +33,8 @@ def _read(source_file: Path) -> Data:
 def _validate_source(data: Data) -> None:
     """Validate source data."""
     assert "category" in data
-    assert data["category"] in ("prose", "poetry")
+    category = data["category"]
+    assert category in ("prose", "poetry")
 
     assert "title" in data
     assert "author" in data
@@ -43,5 +44,13 @@ def _validate_source(data: Data) -> None:
 
     assert isinstance(data["text"], list)
 
-    for line in data["text"]:
-        assert isinstance(line, str)
+    if category == "prose":
+        for line in data["text"]:
+            assert isinstance(line, str)
+
+    elif category == "poetry":
+        for section in data["text"]:
+            assert isinstance(section, list)
+
+            for line in section:
+                assert isinstance(line, str)
