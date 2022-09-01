@@ -1,2 +1,3 @@
 toolchain/dist/
 builders/*/build/
+*.pdf

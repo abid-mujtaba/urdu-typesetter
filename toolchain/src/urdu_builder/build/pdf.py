@@ -20,7 +20,7 @@ def build(source_dir: str) -> None:
     _pre_populate_build(build_dir)
 
     data = read(source)
-    text = inject(template_file, data)
+    text = inject(template_file, data, tex=True)
     _create_tex(build_dir, text)
 
     _create_pdf(build_dir)
