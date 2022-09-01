@@ -5,11 +5,23 @@
         <title>{{title}}</title>
         <link rel="stylesheet" type="text/css" href="assets/css/urdu.css" />
     </head>
-    <body>
+    <body {% if category == "poetry" %}class="poetry"{% endif %}>
         <h1>{{title}}</h1>
         <h2>{{author}}</h2>
-        {% for line in text %}
+        {% if category == "prose" %}
+            {% for line in text %}
         <p>{{line}}</p>
         {% endfor %}
+        {% elif category == "poetry" %}
+            {% for section in text %}
+        <div class="section">
+            {% for line in section %}
+            <div class="stretch">
+                {{line}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {% endif %}
     </body>
 </html>
