@@ -1,17 +1,35 @@
 """Read yaml source file and fetch data."""
 
 from pathlib import Path
-from typing import Any, Dict
+import re
+from typing import Any, Dict, Optional
 
 from ruyaml import YAML
+from schema import And, Schema, Use
+from schema import Optional as SOptional
 
 
 Data = Dict[str, Any]
 
 
-def read(source_dir: Path) -> Data:
+def read_source(source_dir: Path) -> Data:
     """Read yaml data from source."""
-    return _read(source_dir / "source.yaml")
+    data = _read_file(source_dir / "source.yaml")
+    _validate_source(data)
+    return data
+
+
+def read_format(source_dir: Path) -> Optional[Data]:
+    """Read yaml data from format.yaml."""
+    format_file = source_dir / "format.yaml"
+
+    if format_file.exists():
+        data = _read_file(source_dir / "format.yaml")
+        _validate_format(data)
+        return data
+
+    else:
+        return None
 
 
 def artifact_name(source: Path) -> str:
@@ -19,14 +37,13 @@ def artifact_name(source: Path) -> str:
     return str(source.relative_to(source.parent))
 
 
-def _read(source_file: Path) -> Data:
+def _read_file(source_file: Path) -> Data:
     """Read yaml data from source file."""
     yaml = YAML(typ="safe")
 
     with source_file.open(encoding="UTF-8") as fin:
         data = yaml.load(fin)
 
-    _validate_source(data)
     return data
 
 
@@ -54,3 +71,16 @@ def _validate_source(data: Data) -> None:
 
             for line in section:
                 assert isinstance(line, str)
+
+
+def _validate_format(data: Data) -> None:
+    """Validate format data."""
+    schema = {
+        SOptional("poetry"): {
+            SOptional("html"): {
+                "width": And(Use(str), lambda width: re.match(r"\d+(em|px)", width))
+            }
+        }
+    }
+    validator = Schema(schema)
+    validator.validate(data)

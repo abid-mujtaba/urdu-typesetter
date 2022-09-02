@@ -4,6 +4,13 @@
     <head>
         <title>{{title}}</title>
         <link rel="stylesheet" type="text/css" href="assets/css/urdu.css" />
+        {% if format %}
+            <style>
+                div.section {
+                    width: {{format.width}};
+                }
+            </style>
+        {% endif %}
     </head>
     <body {% if category == "poetry" %}class="poetry"{% endif %}>
         <h1>{{title}}</h1>

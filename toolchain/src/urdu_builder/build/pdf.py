@@ -6,7 +6,7 @@ from shutil import copy, rmtree
 import subprocess
 
 from .inject import inject
-from .source import artifact_name, read
+from .source import artifact_name, read_source
 
 
 def build(source_dir: str) -> None:
@@ -19,7 +19,7 @@ def build(source_dir: str) -> None:
 
     _pre_populate_build(build_dir)
 
-    data = read(source)
+    data = read_source(source)
     text = inject(template_file, data, tex=True)
     _create_tex(build_dir, text)
 

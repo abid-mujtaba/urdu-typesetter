@@ -5,7 +5,7 @@ from pathlib import Path
 from shutil import copy, copytree, rmtree
 
 from .inject import inject
-from .source import artifact_name, read
+from .source import artifact_name, read_format, read_source
 
 
 def build(source_dir: str, create_artifact: bool = True) -> str:
@@ -18,7 +18,16 @@ def build(source_dir: str, create_artifact: bool = True) -> str:
 
     _pre_populate_build(build_dir)
 
-    data = read(source)
+    data = read_source(source)
+    fmt = read_format(source)
+
+    try:
+        if fmt:
+            data["format"] = {"width": fmt["poetry"]["html"]["width"]}
+
+    except KeyError:
+        pass
+
     text = inject(template_file, data)
     _create_html(build_dir, filename, text)
 

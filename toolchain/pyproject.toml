@@ -14,6 +14,7 @@ dependencies = [
     "jinja2",
     "livereload",
     "ruyaml",
+    "schema",
 ]
 classifiers = [
     "Programming Language :: Python :: 3",

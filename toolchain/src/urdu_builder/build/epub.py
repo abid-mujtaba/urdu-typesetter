@@ -6,7 +6,7 @@ from shutil import copy, copytree, rmtree
 from zipfile import ZipFile
 
 from .inject import inject
-from .source import Data, artifact_name, read
+from .source import Data, artifact_name, read_source
 
 
 def build(source_dir: str) -> None:
@@ -16,7 +16,7 @@ def build(source_dir: str) -> None:
     filename = f"{artifact_name(source)}.epub"
 
     _pre_populate_build(build_dir)
-    data = read(source)
+    data = read_source(source)
 
     if (source / "cover.tiff").exists():
         _copy_cover(source, build_dir)
