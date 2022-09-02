@@ -6,7 +6,10 @@ from shutil import copy, rmtree
 import subprocess
 
 from .inject import inject
-from .source import artifact_name, read_source
+from .source import artifact_name, read_source, read_format
+
+
+DEFAULT_WIDTH = 0.45
 
 
 def build(source_dir: str) -> None:
@@ -20,6 +23,17 @@ def build(source_dir: str) -> None:
     _pre_populate_build(build_dir)
 
     data = read_source(source)
+    fmt = read_format(source)
+
+    try:
+        if fmt:
+            data["format"] = {"width": fmt["poetry"]["pdf"]["width"]}
+        else:
+            data["format"] = {"width": DEFAULT_WIDTH}
+
+    except KeyError:
+        data["format"] = {"width": DEFAULT_WIDTH}
+
     text = inject(template_file, data, tex=True)
     _create_tex(build_dir, text)
 

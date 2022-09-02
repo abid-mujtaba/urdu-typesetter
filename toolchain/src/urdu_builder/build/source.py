@@ -65,6 +65,10 @@ def _validate_source(data: Data) -> None:
 
 def _validate_format(data: Data) -> None:
     """Validate format data."""
-    schema = {SOptional("poetry"): {SOptional("html"): {"width": Regex(r"\d+(em|px)")}}}
+    html = {SOptional("html"): {"width": Regex(r"\d+(em|px)")}}
+    pdf = {SOptional("pdf"): {"width": float}}
+
+    schema = {"poetry": {**html, **pdf}}
+
     validator = Schema(schema)
     validator.validate(data)
