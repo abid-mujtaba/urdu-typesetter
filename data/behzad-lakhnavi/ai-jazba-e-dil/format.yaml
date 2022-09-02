@@ -1,0 +1,5 @@
+poetry:
+  html:
+    width: 17em
+  pdf:
+    width: 0.7
