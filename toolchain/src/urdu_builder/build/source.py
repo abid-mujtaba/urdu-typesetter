@@ -1,11 +1,10 @@
 """Read yaml source file and fetch data."""
 
 from pathlib import Path
-import re
 from typing import Any, Dict, Optional
 
 from ruyaml import YAML
-from schema import And, Schema, Use
+from schema import Or, Regex, Schema
 from schema import Optional as SOptional
 
 
@@ -28,8 +27,7 @@ def read_format(source_dir: Path) -> Optional[Data]:
         _validate_format(data)
         return data
 
-    else:
-        return None
+    return None
 
 
 def artifact_name(source: Path) -> str:
@@ -49,38 +47,24 @@ def _read_file(source_file: Path) -> Data:
 
 def _validate_source(data: Data) -> None:
     """Validate source data."""
-    assert "category" in data
-    category = data["category"]
-    assert category in ("prose", "poetry")
+    core = {
+        "title": str,
+        "author": str,
+        SOptional("date", default=""): str,
+        SOptional("description", default=""): str,
+    }
 
-    assert "title" in data
-    assert "author" in data
-    assert "date" in data
-    assert "description" in data
-    assert "text" in data
+    prose = {"category": "prose", "text": [str], **core}
+    poetry = {"category": "poetry", "text": [[str]], **core}
 
-    assert isinstance(data["text"], list)
+    schema = Or(prose, poetry)
 
-    if category == "prose":
-        for line in data["text"]:
-            assert isinstance(line, str)
-
-    elif category == "poetry":
-        for section in data["text"]:
-            assert isinstance(section, list)
-
-            for line in section:
-                assert isinstance(line, str)
+    validator = Schema(schema)
+    validator.validate(data)
 
 
 def _validate_format(data: Data) -> None:
     """Validate format data."""
-    schema = {
-        SOptional("poetry"): {
-            SOptional("html"): {
-                "width": And(Use(str), lambda width: re.match(r"\d+(em|px)", width))
-            }
-        }
-    }
+    schema = {SOptional("poetry"): {SOptional("html"): {"width": Regex(r"\d+(em|px)")}}}
     validator = Schema(schema)
     validator.validate(data)
