@@ -4,7 +4,7 @@
 
 if [[ "$1" = "bash" ]];
 then
-    docker run --rm -it -v "$(pwd -P)":/src -p 8000:8000 --entrypoint=bash xelatex-urdu
+    docker run --rm -it -v "$(pwd -P)":/src -p 8000:8000 --entrypoint=bash urdu-typesetter
 else
-    docker run --rm -v "$(pwd -P)":/src -p 8000:8000 xelatex-urdu "$@"
+    docker run --rm -v "$(pwd -P)":/src -p 8000:8000 urdu-typesetter "$@"
 fi
