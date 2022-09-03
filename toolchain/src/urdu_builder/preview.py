@@ -14,9 +14,12 @@ def preview(source_dir: str):
 
     source = Path(source_dir)
     data_file = source / "source.yaml"
+    format_file = source / "format.yaml"
 
     server = Server()
-    server.watch(str(data_file), lambda: html.build(source_dir, create_artifact=False))
+
+    for file in map(str, (data_file, format_file)):
+        server.watch(file, lambda: html.build(source_dir, create_artifact=False))
 
     server.serve(
         root="/build/html", default_filename=filename, host="0.0.0.0", port=8000
