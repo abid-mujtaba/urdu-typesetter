@@ -50,7 +50,7 @@ def _validate_source(data: Data) -> None:
     core = {
         "title": str,
         "author": str,
-        SOptional("date", default=""): str,
+        SOptional("date", default=""): Or(str, int),
         SOptional("description", default=""): str,
     }
 
