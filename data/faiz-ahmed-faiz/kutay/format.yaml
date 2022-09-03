@@ -1,0 +1,4 @@
+poetry:
+  pdf:
+    width: 0.45
+    separation: 0.8
