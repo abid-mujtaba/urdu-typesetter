@@ -87,16 +87,18 @@
              ((line))
         {% endfor %}
     {% elif category == "poetry" %}
-        \begin{center}
         {% for section in text %}
-            {% for line in section -%}
-               \misra{ ((line)) }
-            {% endfor %}
-               {%- if not loop.last %}
-                    \emptylines{1.5}
-               {%- endif %}
-        {% endfor %}
-        \end{center}
+            \begin{minipage}{\textwidth}
+                \begin{center}
+                    {% for line in section -%}
+                        \misra{ ((line)) }
+                    {% endfor %}
+                \end{center}
+            \end{minipage}
+            {%- if not loop.last %}
+                \emptylines{0.5}
+            {%- endif %}
+    {% endfor %}
     {% endif %}
 
 \end{document}
