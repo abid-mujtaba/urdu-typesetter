@@ -24,15 +24,7 @@ def build(source_dir: str) -> None:
 
     data = read_source(source)
     fmt = read_format(source)
-
-    try:
-        if fmt:
-            data["format"] = {"width": fmt["poetry"]["pdf"]["width"]}
-        else:
-            data["format"] = {"width": DEFAULT_WIDTH}
-
-    except KeyError:
-        data["format"] = {"width": DEFAULT_WIDTH}
+    data["format"] = fmt["poetry"]["pdf"]
 
     text = inject(template_file, data, tex=True)
     _create_tex(build_dir, text)

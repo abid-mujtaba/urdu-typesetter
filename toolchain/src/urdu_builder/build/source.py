@@ -1,7 +1,8 @@
 """Read yaml source file and fetch data."""
 
+from datetime import date
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from ruyaml import YAML
 from schema import Or, Regex, Schema
@@ -18,16 +19,16 @@ def read_source(source_dir: Path) -> Data:
     return data
 
 
-def read_format(source_dir: Path) -> Optional[Data]:
+def read_format(source_dir: Path) -> Data:
     """Read yaml data from format.yaml."""
     format_file = source_dir / "format.yaml"
 
     if format_file.exists():
         data = _read_file(source_dir / "format.yaml")
-        _validate_format(data)
-        return data
+    else:
+        data = {}
 
-    return None
+    return _validate_format(data)
 
 
 def artifact_name(source: Path) -> str:
@@ -48,27 +49,41 @@ def _read_file(source_file: Path) -> Data:
 def _validate_source(data: Data) -> None:
     """Validate source data."""
     core = {
+        "category": Or("prose", "poetry"),
         "title": str,
         "author": str,
-        SOptional("date", default=""): Or(str, int),
+        SOptional("date", default=""): Or(date, int),
         SOptional("description", default=""): str,
+        "text": object,
     }
 
-    prose = {"category": "prose", "text": [str], **core}
-    poetry = {"category": "poetry", "text": [[str]], **core}
+    Schema(core).validate(data)
 
-    schema = Or(prose, poetry)
+    text = data["text"]
 
-    validator = Schema(schema)
-    validator.validate(data)
+    if "category" == "prose":
+        Schema([str]).validate(text)
+
+    if "category" == "poetry":
+        Schema([[str]]).validate(text)
 
 
-def _validate_format(data: Data) -> None:
+def _validate_format(data: Data) -> Data:
     """Validate format data."""
+    # The pdf width is the factor multiplied by \textwidth to constrain each misra
+    # The pdf separation is the factor multiplied by \baselineskip to vertically
+    # separate the shair or bund (stanzas)
+    pdf_default = {"width": 0.5, "separation": 0.5}
+    poetry_default = {"pdf": pdf_default}
+
+    pdf = {
+        SOptional("pdf", default=pdf_default): {
+            SOptional("width", default=pdf_default["width"]): float,
+            SOptional("separation", default=pdf_default["separation"]): float,
+        }
+    }
     html = {SOptional("html"): {"width": Regex(r"\d+(em|px)")}}
-    pdf = {SOptional("pdf"): {"width": float}}
 
-    schema = {"poetry": {**html, **pdf}}
+    schema = {SOptional("poetry", default=poetry_default): {**html, **pdf}}
 
-    validator = Schema(schema)
-    validator.validate(data)
+    return Schema(schema).validate(data)
