@@ -21,6 +21,14 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "mypy",
+    "pylint",
+]
+
 [tool.hatch.build.targets.sdist]
 exclude = [
     "assets/",
