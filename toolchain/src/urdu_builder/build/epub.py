@@ -9,7 +9,7 @@ from .inject import inject
 from .source import Data, artifact_name, read_source
 
 
-def build(source_dir: str) -> None:
+def build(source_dir: str, include_font: bool = False) -> None:
     """Build epub artifact from yaml in source_dir."""
     build_dir = Path("/") / "build" / "epub"
     source = Path(source_dir)
