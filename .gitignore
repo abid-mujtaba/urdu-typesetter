@@ -1,3 +1,4 @@
 toolchain/dist/
 builders/*/build/
+*.epub
 *.pdf

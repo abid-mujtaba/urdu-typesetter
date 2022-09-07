@@ -15,8 +15,9 @@ def build(source_dir: str, include_font: bool = False) -> None:
     source = Path(source_dir)
     filename = f"{artifact_name(source)}.epub"
 
-    _pre_populate_build(build_dir)
+    _pre_populate_build(build_dir, include_font)
     data = read_source(source)
+    data["font"] = include_font
 
     if (source / "cover.tiff").exists():
         _copy_cover(source, build_dir)
@@ -29,10 +30,12 @@ def build(source_dir: str, include_font: bool = False) -> None:
     _create_oebps_file(data, "toc.html", build_dir)
     _create_oebps_file(data, "toc.ncx", build_dir)
 
+    _create_css_file(include_font, build_dir)
+
     _create_epub(build_dir, filename)
 
 
-def _pre_populate_build(build_dir: Path) -> None:
+def _pre_populate_build(build_dir: Path, include_font: bool = False) -> None:
     """Remove and then pre-populate build folder for epub."""
     if build_dir.exists():  # Clean up if present
         rmtree(build_dir)
@@ -43,15 +46,23 @@ def _pre_populate_build(build_dir: Path) -> None:
     assets = Path("/") / "assets"
     templates = Path("/") / "templates" / "epub"
 
+    # Create empty folders for later data injection
     (build_dir / "OEBPS").mkdir()
+    (build_dir / "OEBPS" / "assets").mkdir()
+    (build_dir / "OEBPS" / "assets" / "imgs").mkdir()
+    (build_dir / "OEBPS" / "assets" / "css").mkdir()
 
-    # Copy files from asset and template sources into build folder
-    copytree(assets, build_dir / "OEBPS" / "assets")
+    if include_font:
+        fonts_dir = build_dir / "OEBPS" / "assets" / "fonts"
+        fonts_dir.mkdir()
+        copy(
+            assets / "fonts" / "jameel-noori-nastaleeq.ttf",
+            fonts_dir,
+        )
+
+    # Copy template sources that do NOT require data injection into build folder
     copy(templates / "mimetype", build_dir)
     copytree(templates / "META-INF", build_dir / "META-INF")
-
-    # Create empty folder for later data injection
-    (build_dir / "OEBPS" / "assets" / "imgs").mkdir()
 
 
 def _create_oebps_file(data: Data, filename: str, build_dir: Path) -> None:
@@ -60,6 +71,15 @@ def _create_oebps_file(data: Data, filename: str, build_dir: Path) -> None:
         Path("/") / "templates" / "epub" / "OEBPS" / f"{filename}.template", data
     )
     (build_dir / "OEBPS" / filename).write_text(text)
+
+
+def _create_css_file(include_font: bool, build_dir: Path) -> None:
+    """Inject data into urdu.css template and add to OEBPS."""
+    text = inject(
+        Path("/") / "templates" / "common" / "assets" / "css" / "urdu.css",
+        {"font": include_font},
+    )
+    (build_dir / "OEBPS" / "assets" / "css" / "urdu.css").write_text(text)
 
 
 def _copy_cover(source: Path, build_dir: Path) -> None:

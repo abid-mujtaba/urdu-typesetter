@@ -1,11 +1,16 @@
+{% if font %}
 @font-face {
     font-family: "Jameel Noori Nastaleeq";
     src: url("../fonts/jameel-noori-nastaleeq.ttf") format("truetype");
 }
 
 body {
-    direction: rtl;
     font-family: "Jameel Noori Nastaleeq";
+}
+{% endif %}
+
+body {
+    direction: rtl;
     font-size: 1em;
     word-spacing: 0.25rem;
 }

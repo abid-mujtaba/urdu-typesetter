@@ -5,13 +5,12 @@ from pathlib import Path
 from shutil import copy, copytree, rmtree
 
 from .inject import inject
-from .source import artifact_name, read_format, read_source
+from .source import artifact_name, Data, read_format, read_source
 
 
 def build(source_dir: str, create_artifact: bool = True) -> str:
     """Build the html artifact and return name of html file."""
     build_dir = Path("/") / "build" / "html"
-    template_file = Path("/") / "templates" / "common" / "source.html.template"
 
     source = Path(source_dir)
     filename = f"{artifact_name(source)}.html"
@@ -28,8 +27,8 @@ def build(source_dir: str, create_artifact: bool = True) -> str:
     except KeyError:
         pass
 
-    text = inject(template_file, data)
-    _create_html(build_dir, filename, text)
+    _create_html(data, build_dir, filename)
+    _create_css(build_dir)
 
     if create_artifact:
         _copy_artifact(build_dir, filename)
@@ -47,11 +46,25 @@ def _pre_populate_build(build_dir: Path):
 
     copytree(assets, build_dir / "assets")
 
+    (build_dir / "assets" / "css").mkdir()
 
-def _create_html(build_dir: Path, filename: str, text: str) -> None:
+
+def _create_html(data: Data, build_dir: Path, filename: str) -> None:
     """Create html file from injected template text."""
-    tex_file = build_dir / filename
-    tex_file.write_text(text)
+    template_file = Path("/") / "templates" / "common" / "source.html.template"
+    text = inject(template_file, data)
+
+    html_file = build_dir / filename
+    html_file.write_text(text)
+
+
+def _create_css(build_dir: Path) -> None:
+    """Create urdu.css file from template."""
+    template_file = Path("/") / "templates" / "common" / "assets" / "css" / "urdu.css"
+    text = inject(template_file, {"font": True})
+
+    css_file = build_dir / "assets" / "css" / "urdu.css"
+    css_file.write_text(text)
 
 
 def _copy_artifact(build_dir: Path, filename: str) -> None:
