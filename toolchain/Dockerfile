@@ -1,7 +1,9 @@
 FROM python:3.10-slim as py-builder
 
-RUN pip install --upgrade pip
-RUN pip install --upgrade build
+RUN --mount=type=cache,target=/root/.cache \
+    pip install --upgrade pip
+RUN --mount=type=cache,target=/root/.cache \
+    pip install --upgrade build
 
 WORKDIR /work
 COPY pyproject.toml src/ /work/
@@ -25,7 +27,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY --from=py-builder /work/dist/*.whl /wheel/
-RUN pip install /wheel/*.whl
+RUN --mount=type=cache,target=/root/.cache \
+    pip install /wheel/*.whl
 
 ENTRYPOINT [ "python3.10", "-m", "urdu_builder" ]
 
