@@ -1,0 +1,60 @@
+
+@font-face {
+    font-family: "Jameel Noori Nastaleeq";
+    src: url("../fonts/jameel-noori-nastaleeq.ttf") format("truetype");
+}
+
+body {
+    font-family: "Jameel Noori Nastaleeq";
+}
+
+
+body {
+    direction: rtl;
+    font-size: 1em;
+    word-spacing: 0.25rem;
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 2em;
+}
+
+body.poetry {
+    display: flex;
+    flex-direction: column;
+}
+
+div.section {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    /* Fixed width for each child p to stretch its text over */
+    width: 13em;
+    align-self: center;
+}
+
+div.stretch {
+    height: 2.25em;
+    text-align: justify;
+}
+
+/*
+ * This is a hack the forces the preceding <p> to take up the full width of the parent
+ * div.bund allowing the `text-align: justify` to do its magic.
+ */
+div.stretch::after {
+    content: '';
+    width: 100%;
+    display: inline-block;
+}
