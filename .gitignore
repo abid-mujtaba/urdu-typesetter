@@ -1,4 +1,6 @@
 toolchain/dist/
 builders/*/build/
 *.epub
+*.html
 *.pdf
+assets/
