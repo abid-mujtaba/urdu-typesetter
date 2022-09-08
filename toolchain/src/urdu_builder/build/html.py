@@ -76,5 +76,5 @@ def _copy_artifact(build_dir: Path, filename: str) -> None:
     if assets.exists():
         rmtree(assets)
 
-    copytree(Path("/") / "assets", assets)
+    copytree(build_dir / "assets", assets)
     os.system("chown -R 1000:1000 ./assets")
