@@ -1,0 +1,46 @@
+@font-face {
+    font-family: "Jameel Noori Nastaleeq";
+    src: url("assets/fonts/jameel-noori-nastaleeq.ttf") format("truetype");
+    /* Only apply to Arabic Unicode Block */
+    unicode-range: U+600-6FF;
+}
+
+body {
+    font-family: "Jameel Noori Nastaleeq";
+    font-size: 65%;
+    word-spacing: 0.15em;
+    direction: rtl;
+}
+
+section.section {
+    padding-top: 0.5em;
+}
+
+h1.title {
+    width: 100%;
+    text-align: center;
+    word-spacing: 0.3em;
+}
+
+table td:not([align]).formats-header {
+    text-align: center;
+    vertical-align: middle;
+}
+
+h2,
+p {
+    direction: ltr;
+}
+
+td.urdu {
+    font-size: 125%;
+}
+
+thead {
+    font-size: 150%;
+}
+
+.table tbody tr:last-child td {
+    /* bulma sets this to zero to remove the bottom most border */
+    border-bottom-width: 1px;
+}
