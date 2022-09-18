@@ -11,7 +11,53 @@ is of critical importance.
 
 ## Sample Config
 
+Here is the config and source structure required to produce artifacts for
+Faiz Ahmed Faiz's famous poem *kutay*:
+
+### `format.yaml`
+
+``` yaml
+poetry:
+  pdf:
+    width: 0.45
+    separation: 0.8
+```
+
+### `source.yaml`
+
+``` yaml
+category: poetry
+title: کتے
+author: فیض احمد فیض
+date: 1941
+description: Published in Faiz's first book "Naqsh-e-Faryadi"
+text:
+  -
+    - یہ گلیوں کے آوارہ بیکار کتے
+    - کہ بخشا گیا جن کو ذوقِ گدائی
+    - زمانے کی پھٹکار سرمایہ اِن کا
+    - جہاں بھر کی دھتکار اِن کی کمائی
+  -
+    - نہ آرام شب کو نہ راحت سویرے
+    - غلاظت میں گھر، نالیوں میں بسیرے
+    - جو بِگڑیں تو ایک دوسرے سے لڑا دو
+    - ذرا ایک روٹی کا ٹکڑا دکھا دو
+    - یہ ہر ایک کی ٹھوکریں کھانے والے
+    - یہ فاقوں سے اُکتا کے مر جانے والے
+  -
+    - یہ مظلوم مخلوق گر سر اٹھائے
+    - تو انسان سب سرکشی بھول جائے
+    - یہ چاہیں تو دنیا کو اپنا بنا لیں
+    - یہ آقاؤں کی ہڈّیاں تک چبا لیں
+    - کوئی ان کو احساسِ ذِلّت دلا دے
+    - کوئی اِن کی سوئی ہوئی دم ہلا دے
+```
+
 ## Examples
+
+The artifacts produced by the source above can be found [here](https://abid-mujtaba.github.io/urdu-typesetter/).
+
+This link contains many example of rendered Urdu literature.
 
 ## Usage
 
