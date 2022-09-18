@@ -1,11 +1,18 @@
+dictionaryDefinitions:
+  - name: urdu-dic
+    path: ./urdu-dic
+    addWords: true
 dictionaries:
   - en_US
   - en-gb
+  - urdu-dic
 ignorePaths:
   - "*.svg"
   - "*.ttf"
-words:
-  - foo
+  - cspell.yaml
+  - urdu-dic
+flagWords:
+  - گیے
 ignoreWords:
   - abid
   - baselineskip
@@ -26,6 +33,8 @@ ignoreWords:
   - endgroup
   - endraw
   - epub
+  - faiz's
+  - faryadi
   - fontspec
   - groupmode
   - hangindent
@@ -43,6 +52,7 @@ ignoreWords:
   - mujtaba
   - mypy
   - nafees
+  - naqsh
   - nastaleeq
   - newcommand
   - newlength
