@@ -1,12 +1,15 @@
 dictionaryDefinitions:
   - name: cle-urdu-dic
     path: ./urdu-word-lists/cle
+  - name: cle-urdu-split-dic
+    path: ./urdu-word-lists/cle-split
   - name: project-dic
     path: ./urdu-word-lists/project
 dictionaries:
   - en_US
   - en-gb
   - cle-urdu-dic
+  - cle-urdu-split-dic
   - project-dic
 ignorePaths:
   - "*.svg"
